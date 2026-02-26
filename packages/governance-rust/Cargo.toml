@@ -1,0 +1,38 @@
+# SPDX-License-Identifier: BUSL-1.1
+# Copyright (c) 2026 MuVeraAI Corporation
+
+[workspace]
+resolver = "2"
+members = [
+    "crates/aumos-governance-core",
+    "crates/aumos-governance-std",
+    "crates/aumos-governance-wasm",
+]
+
+[workspace.package]
+version     = "0.1.0"
+edition     = "2021"
+authors     = ["MuVeraAI Corporation <oss@muverai.com>"]
+license     = "BUSL-1.1"
+repository  = "https://github.com/aumos-ai/aumos-sdks"
+homepage    = "https://aumos.ai"
+keywords    = ["governance", "ai-agents", "trust", "compliance", "wasm"]
+categories  = ["no-std", "wasm", "api-bindings"]
+
+# Shared dependency versions pinned at the workspace level so every crate
+# references the same semver.  Crates opt-in via workspace = true.
+[workspace.dependencies]
+aumos-governance-core = { path = "crates/aumos-governance-core", default-features = false }
+aumos-governance-std  = { path = "crates/aumos-governance-std" }
+
+serde        = { version = "1.0",  default-features = false, features = ["derive", "alloc"] }
+serde_json   = { version = "1.0",  default-features = false, features = ["alloc"] }
+hashbrown    = { version = "0.14", default-features = false, features = ["serde"] }
+wasm-bindgen = { version = "0.2" }
+serde-wasm-bindgen = { version = "0.6" }
+
+[profile.release]
+opt-level = "z"   # optimise for binary size (important for WASM)
+lto       = true
+codegen-units = 1
+panic     = "abort"

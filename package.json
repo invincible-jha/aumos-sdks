@@ -1,0 +1,27 @@
+{
+  "name": "aumos-sdks",
+  "private": true,
+  "version": "0.0.0",
+  "description": "AumOS Governance SDK monorepo — TypeScript, Python, Go, Rust SDKs and libraries",
+  "workspaces": [
+    "packages/governance-ts",
+    "packages/trust-ladder/typescript",
+    "packages/audit-trail/typescript",
+    "packages/budget-enforcer/typescript"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "fire-line-audit": "bash scripts/fire-line-audit.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aumos-ai/aumos-sdks.git"
+  },
+  "license": "SEE LICENSE IN LICENSE",
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

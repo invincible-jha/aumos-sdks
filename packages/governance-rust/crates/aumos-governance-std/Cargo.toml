@@ -1,0 +1,23 @@
+# SPDX-License-Identifier: BUSL-1.1
+# Copyright (c) 2026 MuVeraAI Corporation
+
+[package]
+name        = "aumos-governance-std"
+version.workspace    = true
+edition.workspace    = true
+authors.workspace    = true
+license.workspace    = true
+repository.workspace = true
+homepage.workspace   = true
+keywords.workspace   = true
+description = "std-only governance storage backends for AumOS — file-based JSON persistence"
+documentation = "https://docs.rs/aumos-governance-std"
+readme = "../../README.md"
+
+[dependencies]
+aumos-governance-core = { workspace = true, features = ["std"] }
+serde      = { workspace = true, features = ["std"] }
+serde_json = { workspace = true, features = ["std"] }
+
+[lib]
+name = "aumos_governance_std"

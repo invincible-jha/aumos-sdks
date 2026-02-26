@@ -1,0 +1,29 @@
+# SPDX-License-Identifier: BUSL-1.1
+# Copyright (c) 2026 MuVeraAI Corporation
+
+[package]
+name        = "aumos-governance-core"
+version.workspace    = true
+edition.workspace    = true
+authors.workspace    = true
+license.workspace    = true
+repository.workspace = true
+homepage.workspace   = true
+keywords.workspace   = true
+description = "Core governance types and engine for AumOS — no_std compatible"
+documentation = "https://docs.rs/aumos-governance-core"
+readme = "../../README.md"
+
+[features]
+# "std" is on by default so that normal Rust consumers get the full experience.
+# Embedded / WASM targets that require no_std must set default-features = false.
+default = ["std"]
+std     = ["serde/std", "serde_json/std", "hashbrown/default"]
+
+[dependencies]
+serde     = { workspace = true }
+serde_json = { workspace = true }
+hashbrown = { workspace = true }
+
+[lib]
+name = "aumos_governance_core"

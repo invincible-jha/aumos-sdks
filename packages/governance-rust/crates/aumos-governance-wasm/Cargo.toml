@@ -1,0 +1,28 @@
+# SPDX-License-Identifier: BUSL-1.1
+# Copyright (c) 2026 MuVeraAI Corporation
+
+[package]
+name        = "aumos-governance-wasm"
+version.workspace    = true
+edition.workspace    = true
+authors.workspace    = true
+license.workspace    = true
+repository.workspace = true
+homepage.workspace   = true
+description = "WebAssembly bindings for the AumOS governance SDK"
+documentation = "https://docs.rs/aumos-governance-wasm"
+
+[lib]
+# cdylib produces the .wasm binary; rlib allows downstream Rust crates to
+# depend on this package as a library.
+crate-type = ["cdylib", "rlib"]
+name = "aumos_governance_wasm"
+
+[dependencies]
+aumos-governance-core = { workspace = true, features = ["std"] }
+wasm-bindgen          = { workspace = true }
+serde-wasm-bindgen    = { workspace = true }
+serde                 = { workspace = true, features = ["std"] }
+
+[dev-dependencies]
+wasm-bindgen-test = "0.3"
