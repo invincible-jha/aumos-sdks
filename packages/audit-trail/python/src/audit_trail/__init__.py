@@ -7,11 +7,12 @@ agent-audit-trail — Immutable, hash-chained decision logging for AI agent gove
 Public API surface:
 
     Classes:
-        AuditLogger    — Primary logger: log(), query(), verify(), export_records(), count()
-        HashChain      — Low-level hash-chain management (append + verify)
-        AuditQuery     — Composable query facade over any AuditStorage backend
-        MemoryStorage  — Volatile in-memory storage (default)
-        FileStorage    — Append-only NDJSON file storage
+        AuditLogger             — Primary logger: log(), query(), verify(), export_records(), count()
+        HashChain               — Low-level hash-chain management (append + verify)
+        AuditQuery              — Composable query facade over any AuditStorage backend
+        MemoryStorage           — Volatile in-memory storage (default)
+        FileStorage             — Append-only NDJSON file storage
+        GovernanceOTelExporter  — OTel span emitter for governance decisions
 
     Functions:
         export_json     — Serialise records to JSON
@@ -19,10 +20,14 @@ Public API surface:
         export_cef      — Serialise records to CEF (SIEM)
         export_records  — Format-dispatching export helper
 
+    Constants:
+        GOVERNANCE_SEMANTIC_CONVENTIONS — OTel attribute keys and span names
+
     Types:
         AuditRecord, GovernanceDecisionInput, AuditFilter,
         ChainVerificationResult, ChainVerificationSuccess,
-        ChainVerificationFailure, AuditStorage
+        ChainVerificationFailure, AuditStorage,
+        TrustCheckSnapshot, BudgetCheckSnapshot, ConsentCheckSnapshot
 """
 
 from audit_trail.chain import HashChain
@@ -40,6 +45,14 @@ from audit_trail.types import (
     ChainVerificationResult,
     ChainVerificationSuccess,
     GovernanceDecisionInput,
+)
+
+from audit_trail.otel_conventions import GOVERNANCE_SEMANTIC_CONVENTIONS
+from audit_trail.otel_exporter import (
+    BudgetCheckSnapshot,
+    ConsentCheckSnapshot,
+    GovernanceOTelExporter,
+    TrustCheckSnapshot,
 )
 
 __all__ = [
@@ -66,4 +79,10 @@ __all__ = [
     "ChainVerificationResult",
     "ChainVerificationSuccess",
     "ChainVerificationFailure",
+    # OpenTelemetry
+    "GOVERNANCE_SEMANTIC_CONVENTIONS",
+    "GovernanceOTelExporter",
+    "TrustCheckSnapshot",
+    "BudgetCheckSnapshot",
+    "ConsentCheckSnapshot",
 ]

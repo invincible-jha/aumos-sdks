@@ -1,5 +1,7 @@
 # AumOS SDKs
 
+[![Governance Score](https://img.shields.io/badge/governance-self--assessed-blue)](https://github.com/aumos-ai/aumos-sdks)
+
 Official SDKs and governance libraries for building AumOS-compliant AI agent applications.
 
 ## Packages

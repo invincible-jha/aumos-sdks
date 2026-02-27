@@ -1,0 +1,33 @@
+# SPDX-License-Identifier: BSL-1.1
+# Copyright (c) 2026 MuVeraAI Corporation
+
+[package]
+name        = "aumos-governance-cf"
+version.workspace    = true
+edition.workspace    = true
+authors.workspace    = true
+license.workspace    = true
+repository.workspace = true
+homepage.workspace   = true
+description = "Cloudflare Workers governance middleware for AumOS"
+documentation = "https://docs.rs/aumos-governance-cf"
+
+[lib]
+# cdylib produces the .wasm binary needed for Cloudflare Workers.
+crate-type = ["cdylib", "rlib"]
+name = "aumos_governance_cf"
+
+[features]
+# The "cf-worker" feature gates the `worker` crate dependency so the library
+# can compile in native mode for testing without requiring the Workers runtime.
+default = []
+cf-worker = ["worker"]
+
+[dependencies]
+aumos-governance-core = { workspace = true, features = ["std"] }
+serde                 = { workspace = true, features = ["std"] }
+serde_json            = { workspace = true, features = ["std"] }
+
+# The `worker` crate is optional; it is only needed when compiling for
+# Cloudflare Workers (wasm32-unknown-unknown target).
+worker = { version = "0.4", optional = true }

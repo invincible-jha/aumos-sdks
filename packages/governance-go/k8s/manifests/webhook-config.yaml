@@ -1,0 +1,48 @@
+# SPDX-License-Identifier: BSL-1.1
+# Copyright (c) 2026 MuVeraAI Corporation
+#
+# ValidatingWebhookConfiguration for the AumOS governance admission webhook.
+# Deploy this manifest after the webhook Deployment and Service are running
+# and healthy (see deployment.yaml).
+#
+# Prerequisites:
+#   - cert-manager is installed and the aumos-system namespace exists.
+#   - The webhook Service (aumos-governance-webhook) is up and passing /healthz.
+#   - The caBundle field below must be populated with the base64-encoded CA
+#     certificate used to sign the webhook's TLS certificate. When using
+#     cert-manager with a Certificate resource, inject the CA bundle via the
+#     cert-manager.io/inject-ca-from annotation on this object.
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: aumos-governance-webhook
+  annotations:
+    # cert-manager injects the CA bundle automatically when this annotation
+    # references the Certificate resource that signs the webhook TLS cert.
+    cert-manager.io/inject-ca-from: aumos-system/aumos-governance-webhook-cert
+webhooks:
+  - name: governance.aumos.ai
+    rules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["pods"]
+    clientConfig:
+      service:
+        name: aumos-governance-webhook
+        namespace: aumos-system
+        path: /validate
+        port: 443
+      # caBundle is populated by cert-manager via the annotation above.
+      # If not using cert-manager, base64-encode your CA cert and set it here.
+      caBundle: ""
+    admissionReviewVersions: ["v1"]
+    sideEffects: None
+    # Fail means: if the webhook is unreachable, deny the admission request.
+    # Change to Ignore only in development environments.
+    failurePolicy: Fail
+    # The webhook only intercepts Pods in namespaces labelled for AumOS governance.
+    namespaceSelector:
+      matchLabels:
+        aumos.ai/governance: enabled
+    timeoutSeconds: 10

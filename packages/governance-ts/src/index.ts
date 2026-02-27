@@ -125,3 +125,125 @@ export {
   ConsentRequiredError,
   InvalidConfigError,
 } from './errors.js';
+
+// ---------------------------------------------------------------------------
+// Streaming
+// ---------------------------------------------------------------------------
+export {
+  GovernedStream,
+  StreamHaltedError,
+  createGovernedStream,
+} from './streaming.js';
+export type {
+  StreamGovernanceCheckResult,
+  StreamGovernanceCallback,
+  GovernedStreamConfig,
+} from './streaming.js';
+
+// ---------------------------------------------------------------------------
+// Events
+// ---------------------------------------------------------------------------
+export {
+  GovernanceEventEmitter,
+  EVENT_DECISION,
+  EVENT_BUDGET_WARNING,
+  EVENT_TRUST_DENIED,
+  EVENT_AUDIT_LOGGED,
+} from './events.js';
+export type {
+  GovernanceEventName,
+  GovernanceEventPayloadMap,
+  GovernanceDecisionEventPayload,
+  GovernanceBudgetWarningEventPayload,
+  GovernanceTrustDeniedEventPayload,
+  GovernanceAuditLoggedEventPayload,
+  GovernanceEventListener,
+} from './events.js';
+
+// ---------------------------------------------------------------------------
+// Integrations — Vercel AI SDK
+// ---------------------------------------------------------------------------
+export {
+  VercelAIGovernanceConfigSchema,
+  GovernedAI,
+  GovernanceDeniedError,
+  createGovernedAI,
+} from './integrations/vercel-ai.js';
+export type {
+  VercelAIGovernanceConfig,
+  GovernanceMiddlewareResult,
+  BeforeRequestParams,
+} from './integrations/vercel-ai.js';
+
+// ---------------------------------------------------------------------------
+// Integrations — OpenAI wrapper
+// ---------------------------------------------------------------------------
+export {
+  GovernedOpenAI,
+  GovernedOpenAIConfigSchema,
+  TrustLevelInsufficientError,
+} from './integrations/openai-wrapper.js';
+export type {
+  GovernedOpenAIConfig,
+  OpenAIChatMessage,
+  OpenAIChatCompletionParams,
+  OpenAIClientLike,
+  OpenAIGovernanceAuditRecord,
+} from './integrations/openai-wrapper.js';
+
+// ---------------------------------------------------------------------------
+// Integrations — Anthropic wrapper
+// ---------------------------------------------------------------------------
+export {
+  GovernedAnthropic,
+  GovernedAnthropicConfigSchema,
+} from './integrations/anthropic-wrapper.js';
+export type {
+  GovernedAnthropicConfig,
+  AnthropicMessage,
+  AnthropicContentBlock,
+  AnthropicMessagesCreateParams,
+  AnthropicClientLike,
+  AnthropicGovernanceAuditRecord,
+} from './integrations/anthropic-wrapper.js';
+
+// ---------------------------------------------------------------------------
+// Integrations — Express middleware
+// ---------------------------------------------------------------------------
+export { governanceMiddleware } from './integrations/express-middleware.js';
+export type {
+  ExpressGovernanceMiddlewareConfig,
+  RequestGovernanceContext,
+  GovernanceRequest,
+  ExpressRequest,
+  ExpressResponse,
+  ExpressNextFunction,
+} from './integrations/express-middleware.js';
+
+// ---------------------------------------------------------------------------
+// Integrations — Fastify plugin
+// ---------------------------------------------------------------------------
+export {
+  governanceFastifyPlugin,
+  governancePluginMeta,
+} from './integrations/fastify-plugin.js';
+export type {
+  FastifyGovernancePluginOptions,
+  FastifyRequestGovernanceContext,
+  FastifyInstanceGovernanceConfig,
+  FastifyRequestLike,
+  FastifyReplyLike,
+  FastifyInstanceLike,
+} from './integrations/fastify-plugin.js';
+
+// ---------------------------------------------------------------------------
+// Integrations — Hono middleware
+// ---------------------------------------------------------------------------
+export { governanceHonoMiddleware } from './integrations/hono-middleware.js';
+export type {
+  HonoGovernanceMiddlewareConfig,
+  HonoGovernanceContext,
+  HonoContextLike,
+  HonoNext,
+  HonoMiddlewareHandler,
+} from './integrations/hono-middleware.js';

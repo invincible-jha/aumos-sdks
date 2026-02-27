@@ -1,0 +1,29 @@
+{
+  "name": "@aumos/security-bundle",
+  "version": "0.1.0",
+  "description": "Complete AI agent security stack — one install, full protection",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "license": "BSL-1.1",
+  "author": "MuVeraAI Corporation",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aumos-ai/aumos-sdks",
+    "directory": "packages/security-bundle"
+  },
+  "dependencies": {
+    "@aumos/mcp-trust-gate": "^0.1.0",
+    "@aumos/budget-enforcer": "^0.1.0",
+    "@aumos/audit-trail": "^0.1.0"
+  },
+  "peerDependencies": {
+    "@aumos/types": "^0.1.0"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src/"
+  },
+  "files": ["dist", "README.md", "LICENSE"]
+}
