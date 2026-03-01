@@ -63,6 +63,16 @@ pub mod storage;
 pub mod trust;
 pub mod types;
 
+// Async engine — only compiled when the "async" feature is enabled.
+// Requires the "std" feature (Tokio cannot run in no_std environments).
+#[cfg(feature = "async")]
+pub mod async_engine;
+
+// Config loader — TOML file and environment variable loading.
+// Only compiled when the "config-loader" feature is enabled.
+#[cfg(feature = "config-loader")]
+pub mod config_loader;
+
 // Re-export the most commonly used items at the crate root so consumers can
 // write `use aumos_governance_core::GovernanceEngine;` instead of the fully
 // qualified path.
@@ -72,3 +82,11 @@ pub use types::{
     AuditFilter, AuditRecord, BudgetResult, ConsentResult, Context, Decision, Envelope,
     TrustAssignment, TrustLevel, TrustResult,
 };
+
+// Re-export the async engine at the crate root for ergonomic imports.
+#[cfg(feature = "async")]
+pub use async_engine::AsyncGovernanceEngine;
+
+// Re-export config loader types at the crate root.
+#[cfg(feature = "config-loader")]
+pub use config_loader::{AuditLevel, ConfigError, GovernanceConfig, load_config, load_config_from_env};

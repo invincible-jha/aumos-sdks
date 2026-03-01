@@ -14,12 +14,29 @@
       "types": "./dist/index.d.ts"
     }
   },
-  "files": ["dist", "README.md", "LICENSE"],
+  "files": ["dist", "README.md", "LICENSE", "CHANGELOG.md"],
   "scripts": {
     "build": "tsup",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src/",
     "test": "vitest run"
+  },
+  "keywords": [
+    "aumos",
+    "ai-governance",
+    "audit-log",
+    "hash-chain",
+    "agent-logging",
+    "ai-agents",
+    "compliance"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aumos-ai/aumos-sdks",
+    "directory": "packages/audit-trail/typescript"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "devDependencies": {
     "tsup": "^8.0.0",

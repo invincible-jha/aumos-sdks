@@ -19,11 +19,19 @@ readme = "../../README.md"
 # Embedded / WASM targets that require no_std must set default-features = false.
 default = ["std"]
 std     = ["serde/std", "serde_json/std", "hashbrown/default"]
+# "async" enables the AsyncGovernanceEngine built on Tokio.
+# Requires the "std" feature (no_std targets cannot use async).
+async   = ["tokio", "std"]
+# "config-loader" enables TOML file and env-var config loading.
+# Requires the "std" feature.
+config-loader = ["toml", "std"]
 
 [dependencies]
-serde     = { workspace = true }
+serde      = { workspace = true }
 serde_json = { workspace = true }
-hashbrown = { workspace = true }
+hashbrown  = { workspace = true }
+tokio      = { workspace = true, optional = true }
+toml       = { version = "0.8", optional = true }
 
 [dev-dependencies]
 criterion = { workspace = true }

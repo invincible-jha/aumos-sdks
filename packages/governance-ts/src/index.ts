@@ -11,7 +11,7 @@
  *
  * Sub-managers (usable standalone or via GovernanceEngine)
  *   TrustManager       — manage agent trust level assignments
- *   BudgetManager      — manage per-category spending envelopes
+ *   BudgetManager      — manage per-category spending envelopes (deprecated; use @aumos/budget-enforcer)
  *   ConsentManager     — record and enforce data access consent
  *   AuditLogger        — append-only governance decision log
  *
@@ -31,12 +31,29 @@
  * Errors
  *   GovernanceError, TrustDeniedError, BudgetExceededError,
  *   ConsentRequiredError, InvalidConfigError
+ *
+ * Streaming governance
+ *   GovernedStream         — govern AsyncIterable<string> token streams
+ *   StreamHaltedError      — thrown when a stream is halted by governance
+ *   createGovernedStream   — factory for AsyncIterable-based governed streams
+ *
+ * Agent Memory Governance (AMGP)
+ *   MemoryGovernor         — evaluate and record memory access decisions
+ *   RetentionPolicyEngine  — evaluate retention policies and expiry
+ *   parseDurationMs        — parse ISO 8601 durations to milliseconds
+ *   computeExpiresAt       — compute expiry timestamps from retention policies
+ *
+ * Multi-Model Cost Tracking
+ *   CostTracker            — record LLM usage and generate cost summaries
+ *   ModelPricingRegistry   — register and look up per-model pricing
  */
 
 // ---------------------------------------------------------------------------
 // Engine
 // ---------------------------------------------------------------------------
 export { GovernanceEngine } from './governance.js';
+export { ReferenceGovernanceEngine } from './reference-engine.js';
+export type { ReferenceEngineConfig } from './reference-engine.js';
 
 // ---------------------------------------------------------------------------
 // Trust
@@ -48,6 +65,11 @@ export { validateTrustLevel, assertValidTrustLevel } from './trust/validator.js'
 
 // ---------------------------------------------------------------------------
 // Budget
+//
+// NOTE: BudgetManager is deprecated. New callers should use BudgetEnforcer
+// from the @aumos/budget-enforcer package, which provides commit/release
+// semantics and envelope suspension in addition to the core check/record API.
+// BudgetManager will be removed in v1.0.
 // ---------------------------------------------------------------------------
 export { BudgetManager } from './budget/manager.js';
 export { SpendingTracker, computeNextResetAt } from './budget/tracker.js';
@@ -131,14 +153,31 @@ export {
 // ---------------------------------------------------------------------------
 export {
   GovernedStream,
+  LegacyGovernedReadableStream,
   StreamHaltedError,
   createGovernedStream,
+  createGovernedReadableStream,
 } from './streaming.js';
 export type {
   StreamGovernanceCheckResult,
   StreamGovernanceCallback,
   GovernedStreamConfig,
+  LegacyStreamGovernanceCheckResult,
+  LegacyStreamGovernanceCallback,
+  LegacyGovernedStreamConfig,
 } from './streaming.js';
+
+// ---------------------------------------------------------------------------
+// Storage adapters
+// ---------------------------------------------------------------------------
+export type { StorageAdapter, AuditStorageFilter } from './storage/adapter.js';
+export { MemoryStorageAdapter } from './storage/memory.js';
+export { RedisStorageAdapter } from './storage/redis.js';
+export type { RedisClientLike, RedisStorageConfig } from './storage/redis.js';
+export { SQLiteStorageAdapter } from './storage/sqlite.js';
+export type { SQLiteDatabaseLike, SQLiteStatementLike, SQLiteStorageConfig } from './storage/sqlite.js';
+export { PostgresStorageAdapter } from './storage/postgres.js';
+export type { PostgresClientLike, PostgresStorageConfig } from './storage/postgres.js';
 
 // ---------------------------------------------------------------------------
 // Events
@@ -247,3 +286,115 @@ export type {
   HonoNext,
   HonoMiddlewareHandler,
 } from './integrations/hono-middleware.js';
+
+// ---------------------------------------------------------------------------
+// Policy-as-code
+// ---------------------------------------------------------------------------
+export {
+  // Zod schemas
+  GovernancePolicySchema,
+  PolicyMetadataSchema,
+  PolicyMatchSchema,
+  PolicyActionSchema,
+  PolicyRuleSchema,
+  PolicyDefaultsSchema,
+  PolicySpecSchema,
+  // Loaders
+  loadPolicy,
+  loadPolicyAsync,
+  loadPolicySync,
+  loadPolicyFromString,
+  validatePolicy,
+  PolicyParseError,
+  // Engine
+  PolicyEngine,
+  // Watcher
+  PolicyWatcher,
+} from './policy/index.js';
+export type {
+  GovernancePolicy,
+  PolicyMetadata,
+  PolicyMatch,
+  PolicyAction,
+  PolicyRule,
+  PolicyDefaults,
+  PolicySpec,
+  ValidationResult,
+  GovernanceRequest,
+  PolicyDecision,
+  PolicyChangeCallback,
+  PolicyErrorCallback,
+} from './policy/index.js';
+
+// ---------------------------------------------------------------------------
+// Integrations — LangChain.js tool wrapper
+// ---------------------------------------------------------------------------
+export {
+  GovernedLangChainTool,
+  GovernedLangChainToolConfigSchema,
+  LangChainToolGovernanceDeniedError,
+  LangChainToolTrustInsufficientError,
+} from './integrations/langchain-js.js';
+export type {
+  GovernedLangChainToolConfig,
+  LangChainToolAuditRecord,
+  LangChainToolLike,
+} from './integrations/langchain-js.js';
+
+// ---------------------------------------------------------------------------
+// Integrations — Mastra tool wrapper
+// ---------------------------------------------------------------------------
+export {
+  GovernedMastraTool,
+  GovernedMastraToolConfigSchema,
+  MastraToolGovernanceDeniedError,
+  MastraToolTrustInsufficientError,
+} from './integrations/mastra.js';
+export type {
+  GovernedMastraToolConfig,
+  MastraToolAuditRecord,
+  MastraToolLike,
+} from './integrations/mastra.js';
+
+// ---------------------------------------------------------------------------
+// Agent Memory Governance (AMGP)
+// ---------------------------------------------------------------------------
+export { MemoryGovernor } from './memory/governor.js';
+export type { CreateMemorySlotParams } from './memory/governor.js';
+export { RetentionPolicyEngine, parseDurationMs, computeExpiresAt } from './memory/retention.js';
+export type {
+  MemoryCategory,
+  MemoryAccessRequest,
+  MemoryGovernanceDecision,
+  RetentionPolicy,
+  GovernedMemoryRecord,
+  MemoryAccessLogEntry,
+  MemoryGovernorConfig,
+  ForgetRequest,
+  ForgetResult,
+} from './memory/types.js';
+
+// ---------------------------------------------------------------------------
+// Multi-Model Cost Tracking
+// ---------------------------------------------------------------------------
+export { CostTracker } from './cost/tracker.js';
+export type { RecordRawParams } from './cost/tracker.js';
+export { ModelPricingRegistry } from './cost/provider-registry.js';
+export type {
+  ModelProvider,
+  ModelPricing,
+  LLMUsageRecord,
+  CostSummary,
+  CostBudgetCheckResult,
+  CostTrackerConfig,
+} from './cost/types.js';
+
+// ---------------------------------------------------------------------------
+// Telemetry (OpenTelemetry instrumentation)
+// ---------------------------------------------------------------------------
+export { GovernanceTracer } from './telemetry/otel.js';
+export type {
+  OTelSpanLike,
+  OTelTracerLike,
+  GovernanceOTelConfig,
+} from './telemetry/otel.js';

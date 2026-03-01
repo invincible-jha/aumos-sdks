@@ -1,0 +1,39 @@
+apiVersion: aumos.ai/v1alpha1
+kind: GovernancePolicy
+metadata:
+  name: default-governance
+  labels:
+    environment: production
+spec:
+  defaults:
+    decision: deny
+    trustLevelRequired: 0.5
+    budgetPerAgent: 1000
+    auditLevel: standard
+  rules:
+    - name: allow-trusted-read
+      description: Allow trusted agents to read non-sensitive resources
+      match:
+        trustLevelMin: 0.7
+        actions: ["read", "list", "search"]
+      action:
+        decision: allow
+        auditLevel: minimal
+
+    - name: allow-write-with-consent
+      description: Allow writes only with explicit consent
+      match:
+        actions: ["write", "create", "update", "delete"]
+      action:
+        decision: allow
+        requireConsent: true
+        budgetLimit: 100
+        auditLevel: detailed
+
+    - name: deny-low-trust
+      description: Deny actions from low-trust agents
+      match:
+        trustLevelMax: 0.3
+      action:
+        decision: deny
+        reason: "Agent trust level below minimum threshold"

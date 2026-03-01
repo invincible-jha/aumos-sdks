@@ -14,11 +14,29 @@
       "types": "./dist/index.d.ts"
     }
   },
+  "files": ["dist", "README.md", "LICENSE", "CHANGELOG.md"],
   "scripts": {
     "build": "tsup",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src/",
     "test": "vitest run"
+  },
+  "keywords": [
+    "aumos",
+    "budget",
+    "spending-limits",
+    "ai-agents",
+    "governance",
+    "ai-governance",
+    "economic-safety"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aumos-ai/aumos-sdks",
+    "directory": "packages/budget-enforcer/typescript"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "dependencies": {
     "zod": "^3.23.0"
@@ -31,16 +49,5 @@
   },
   "engines": {
     "node": ">=20.0.0"
-  },
-  "files": [
-    "dist",
-    "src"
-  ],
-  "keywords": [
-    "budget",
-    "spending",
-    "ai-agents",
-    "governance",
-    "aumos"
-  ]
+  }
 }

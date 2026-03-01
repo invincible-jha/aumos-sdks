@@ -8,8 +8,18 @@ version = "0.1.0"
 description = "Complete AI agent security stack — one install, full protection"
 readme = "README.md"
 license = { text = "BSL-1.1" }
-authors = [{ name = "MuVeraAI Corporation" }]
+authors = [{ name = "MuVeraAI Corporation", email = "oss@muverai.com" }]
 requires-python = ">=3.10"
+keywords = ["aumos", "ai-security", "ai-governance", "agent-security", "trust", "budget", "audit"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Typing :: Typed",
+]
 dependencies = [
   "aumos-governance>=0.1.0",
   "agent-audit-trail>=0.1.0",

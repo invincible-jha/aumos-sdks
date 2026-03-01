@@ -32,6 +32,7 @@ serde_json   = { version = "1.0",  default-features = false, features = ["alloc"
 hashbrown    = { version = "0.14", default-features = false, features = ["serde"] }
 wasm-bindgen = { version = "0.2" }
 serde-wasm-bindgen = { version = "0.6" }
+tokio        = { version = "1", features = ["full"], optional = true }
 
 [workspace.dependencies.criterion]
 version  = "0.5"

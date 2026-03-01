@@ -28,6 +28,7 @@ Quick start::
 from __future__ import annotations
 
 from aumos_governance.audit.logger import AuditLogger
+from aumos_governance.audit_chain import ChainedAuditRecord, HashChainedAuditLog
 from aumos_governance.audit.query import AuditFilter, AuditQueryResult, aggregate_outcomes
 from aumos_governance.audit.record import AuditRecord, GovernanceDecisionContext
 from aumos_governance.budget.manager import BudgetCheckResult, BudgetManager
@@ -98,6 +99,9 @@ __all__ = [
     "AuditRecord",
     "GovernanceDecisionContext",
     "aggregate_outcomes",
+    # Hash-chained audit
+    "HashChainedAuditLog",
+    "ChainedAuditRecord",
     # Errors
     "AumOSGovernanceError",
     "TrustLevelError",

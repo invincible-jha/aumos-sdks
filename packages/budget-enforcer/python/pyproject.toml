@@ -8,10 +8,27 @@ version = "0.1.0"
 description = "Economic governance for AI agents — spending limits and budget enforcement"
 license = "BSL-1.1"
 requires-python = ">=3.10"
+authors = [
+    { name = "MuVeraAI Corporation", email = "oss@muverai.com" },
+]
+keywords = ["aumos", "budget", "spending-limits", "ai-agents", "governance", "economic-safety"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Typing :: Typed",
+]
 dependencies = ["pydantic>=2.6.0"]
 
 [project.optional-dependencies]
 dev = ["pytest>=8.0", "ruff>=0.3", "mypy>=1.9"]
+
+[project.urls]
+Homepage = "https://github.com/aumos-ai/aumos-sdks"
+Repository = "https://github.com/aumos-ai/aumos-sdks"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/budget_enforcer"]

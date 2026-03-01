@@ -11,6 +11,10 @@ import { applyRolloverIfDue } from './policy.js';
  * BudgetManager tracks per-category spending envelopes and enforces static
  * spending limits.
  *
+ * @deprecated Use {@link BudgetEnforcer} instead. BudgetEnforcer provides a
+ * richer API including commit/release semantics and envelope suspension.
+ * BudgetManager will be removed in v1.0.
+ *
  * Budget allocation is static — limits are set at construction or via
  * createBudget().  There is no mechanism for dynamic limit adjustment based
  * on spend patterns or ML signals.
